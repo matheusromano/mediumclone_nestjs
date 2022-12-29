@@ -15,7 +15,7 @@ export class UserService {
     constructor(
         @InjectRepository(UserEntity)
         private readonly userRepository: Repository<UserEntity>,
-    ){}
+    ) { }
     async createUser(createDto: CreateUserDto): Promise<UserEntity> {
         const userByEmail = await this.userRepository.findOne({
             where: { email: createDto.email },
@@ -53,19 +53,31 @@ export class UserService {
         };
     }
 
+    async findById(id: number): Promise<UserEntity> {
+        return await this.userRepository.findOne({
+            where: { id },
+        });
+    }
+
     async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
+
         const user = await this.userRepository.findOne({
-            where: { email: loginUserDto.email },
-        })
+            where: {
+                email: loginUserDto.email
+            },
+            select: ['id', 'username', 'email', 'bio', 'image', 'password'],
+        });
+
         if (!user) {
             throw new HttpException('Credentials are not valid', HttpStatus.UNPROCESSABLE_ENTITY)
         }
-        
+
         const isPasswordCorret = await compare(loginUserDto.password, user.password);
         if (!isPasswordCorret) {
             throw new HttpException('Credentials are not valid', HttpStatus.UNPROCESSABLE_ENTITY)
         }
-
+        
+        delete user.password;
         return user;
     }
 }

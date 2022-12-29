@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from '@app/app.controller';
 import { AppService } from '@app/app.service';
 import { TagModule } from '@app/tag/tag.module';
@@ -7,6 +7,7 @@ import { typeOrmConfig } from '@app/config/typeorm.config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from '@app/logging.interceptor';
 import { UserModule } from '@app/user/user.module';
+import { AuthMiddleware } from './user/middleware/auth.middleware';
 
 
 // Module means that this class could be injected into other classes
@@ -15,11 +16,17 @@ import { UserModule } from '@app/user/user.module';
   imports: [TypeOrmModule.forRoot(typeOrmConfig), TagModule, UserModule],
   controllers: [AppController],
   providers: [
-    AppService, 
+    AppService,
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}
