@@ -1,13 +1,18 @@
-import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
+import { ConfigService } from "@nestjs/config/dist";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
-export const typeOrmConfig: PostgresConnectionOptions = {
+type TypeOrmConfig = (...args: any[]) => TypeOrmModuleOptions;
+
+export const typeOrmConfig: TypeOrmConfig = (configService: ConfigService) => {
+    return {
     type: "postgres",
-    host: "pgsql",
-    port: 5432,
-    username: "pguser",
-    password: "pgpassword",
-    database: "mediumclone",
+    host: configService.get("MC_API_DATABASE_HOST"),
+    port: +configService.get('MC_API_DATABASE_PORT'),
+    username: configService.get("MC_API_DATABASE_USER"),
+    password: configService.get("MC_API_DATABASE_PASSWORD"),
+    database: configService.get("MC_API_DATABASE_NAME"),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: false,
     migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
+    };
 };
