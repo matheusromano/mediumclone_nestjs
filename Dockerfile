@@ -4,11 +4,11 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN yarn install
 
 COPY . . 
 
-RUN npm run build
+RUN yarn run build
 
 FROM node:alpine as production
 
@@ -19,10 +19,12 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --omit=dev
+RUN yarn install 
 
 COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
+
+EXPOSE 3000
 
 CMD ["node", "dist/main"]

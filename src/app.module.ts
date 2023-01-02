@@ -8,12 +8,13 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from '@app/logging.interceptor';
 import { UserModule } from '@app/user/user.module';
 import { AuthMiddleware } from './user/middleware/auth.middleware';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 
 // Module means that this class could be injected into other classes
 // If you have other modules, you can import them here, and connect them to other modules
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), TagModule, UserModule],
+  imports: [PrometheusModule.register(), TypeOrmModule.forRoot(typeOrmConfig), TagModule, UserModule],
   controllers: [AppController],
   providers: [
     AppService,
