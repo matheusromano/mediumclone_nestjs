@@ -1,15 +1,3 @@
-FROM node:alpine AS development
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN yarn install
-
-COPY . . 
-
-RUN yarn run build
-
 FROM node:alpine as production
 
 ARG NODE_ENV=production
@@ -23,7 +11,7 @@ RUN yarn install
 
 COPY . .
 
-COPY --from=development /usr/src/app/dist ./dist
+RUN yarn build
 
 EXPOSE 3000
 
