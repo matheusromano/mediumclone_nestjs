@@ -9,6 +9,7 @@ import { UserResponseInterface } from "./types/userResponse.interface";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { compare } from "bcrypt";
+import { UpdateUserDto } from "./dto/updateUser.dto";
 
 @Injectable()
 export class UserService {
@@ -42,6 +43,13 @@ export class UserService {
             username: user.username,
             email: user.email,
         }, JWT_SECRET)
+    }
+
+    async updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+        const user = await this.findById(userId);
+        // line for change de object to new data
+        Object.assign(user, updateUserDto);
+        return await this.userRepository.save(user);
     }
 
     buildUserResponse(user: UserEntity): UserResponseInterface {
