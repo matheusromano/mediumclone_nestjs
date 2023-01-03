@@ -1,0 +1,41 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mediumclone-project
+  name: mediumclone-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediumclone-project
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mediumclone-project
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "3000"
+    spec:
+      - image: matheusrbraga/mc-image
+        name: mc-image
+        ports:
+        - containerPort: 3000
+        env:  
+        - name: MC_API_DATABASE_HOST
+          value: "postgres-release-postgresql"
+        - name: MC_API_DATABASE_PORT
+          value: "5432"
+        - name: MC_API_DATABASE_USER
+          value: "postgres"
+        - name: MC_API_DATABASE_PASSWORD
+          value: "d5yEUecHWC"
+        - name: MC_API_DATABASE_NAME
+          value: "mediumclone"
+    
+        resources: {}
+status: {}

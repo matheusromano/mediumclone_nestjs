@@ -19,16 +19,16 @@ services:
     ports:
       - 8080:8080
   
-  web:
-    build: .
-    ports: 
-      - "3000:3000"
-    environment:
-      - MC_API_DATABASE_HOST=pgsql
-      - MC_API_DATABASE_PORT=5432
-      - MC_API_DATABASE_USER=pguser
-      - MC_API_DATABASE_PASSWORD=pgpassword
-      - MC_API_DATABASE_NAME=mediumclone
+  # web:
+  #   build: .
+  #   ports: 
+  #     - "3000:3000"
+  #   environment:
+  #     - MC_API_DATABASE_HOST=pgsql
+  #     - MC_API_DATABASE_PORT=5432
+  #     - MC_API_DATABASE_USER=pguser
+  #     - MC_API_DATABASE_PASSWORD=pgpassword
+  #     - MC_API_DATABASE_NAME=mediumclone
 
 volumes:
   pg-data:
