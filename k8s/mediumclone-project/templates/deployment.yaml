@@ -21,6 +21,7 @@ spec:
         prometheus.io/path: /metrics
         prometheus.io/port: "3000"
     spec:
+      containers:
       - image: matheusrbraga/mc-image
         name: mc-image
         ports:

@@ -14,5 +14,6 @@ export const typeOrmConfig: TypeOrmConfig = (configService: ConfigService) => {
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: false,
     migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
+    migrationsRun: true,
     };
 };

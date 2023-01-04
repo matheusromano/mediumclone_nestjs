@@ -11,6 +11,7 @@ import { AuthMiddleware } from './user/middleware/auth.middleware';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config/dist';
+import { ArticleModule } from './article/article.module';
 
 
 // Module means that this class could be injected into other classes
@@ -20,7 +21,7 @@ import { ConfigService } from '@nestjs/config/dist';
     imports: [ConfigModule],
     useFactory: typeOrmConfig,
     inject: [ConfigService],
-  }), TagModule, UserModule],
+  }), TagModule, UserModule, ArticleModule],
   controllers: [AppController],
   providers: [
     AppService,
